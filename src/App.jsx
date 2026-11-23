@@ -40,7 +40,7 @@ export default function App() {
   return (
     <main className="relative min-h-screen overflow-x-hidden text-[#1a211d] bg-[#e7efe1]">
       <div className="relative z-10">
-        <nav className="fixed top-0 left-0 right-0 z-[10000] flex items-center justify-center pt-4 sm:pt-6 px-4 gap-2">
+        <nav className="fixed top-0 left-0 right-0 z-[10003] flex items-center justify-center pt-4 sm:pt-6 px-4 gap-2">
           <div className="glass rounded-full w-11 h-11 flex items-center justify-center">
             <Logo />
           </div>
