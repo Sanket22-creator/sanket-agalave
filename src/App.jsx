@@ -24,6 +24,7 @@ export default function App() {
   const [emailAddr, setEmailAddr] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [subscribeMessage, setSubscribeMessage] = useState("");
+  const [selectedProject, setSelectedProject] = useState(null);
   const scrollToSection = (e, id) => {
     if (e && e.preventDefault) e.preventDefault();
     const el = document.getElementById(id);
@@ -262,25 +263,46 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
               {projects.map((item) => (
-                <a
-                  key={item.title}
-                  href={item.externalUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="glass rounded-3xl p-10 transition-all duration-300 hover:bg-white/5 block"
-                >
+                item.title.startsWith("Engineering") || item.title.startsWith("Engineering-Fallstudie") ? (
+                  <button
+                    key={item.title}
+                    type="button"
+                    onClick={() => setSelectedProject(item)}
+                    className="glass rounded-3xl p-10 transition-all duration-300 hover:bg-white/5 block text-left w-full"
+                  >
                   <div className="flex flex-col justify-between h-full min-h-[240px]">
                     <div>
                       <div className="text-[12px] uppercase tracking-[0.2em] text-[#168954] font-bold mb-6">{t.category}</div>
                       <h3 className="text-[1.8rem] sm:text-[2rem] font-semibold leading-tight text-[#1a211d]">{item.title}</h3>
-                      <p className="text-[#111827]/75 mt-5 leading-[1.7] text-[15px] max-w-sm">{item.desc}</p>
+                      <p className="text-[#111827]/75 mt-5 leading-[1.7] text-[15px] max-w-sm line-clamp-2">{item.cardDesc || item.desc}</p>
                     </div>
 
                     <div className="pt-10 text-sm text-[#1a211d]/60">
                       {item.linkText}
                     </div>
                   </div>
-                </a>
+                  </button>
+                ) : (
+                  <a
+                    key={item.title}
+                    href={item.externalUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="glass rounded-3xl p-10 transition-all duration-300 hover:bg-white/5 block"
+                  >
+                    <div className="flex flex-col justify-between h-full min-h-[240px]">
+                      <div>
+                        <div className="text-[12px] uppercase tracking-[0.2em] text-[#168954] font-bold mb-6">{t.category}</div>
+                        <h3 className="text-[1.8rem] sm:text-[2rem] font-semibold leading-tight text-[#1a211d]">{item.title}</h3>
+                        <p className="text-[#111827]/75 mt-5 leading-[1.7] text-[15px] max-w-sm">{item.desc}</p>
+                      </div>
+
+                      <div className="pt-10 text-sm text-[#1a211d]/60">
+                        {item.linkText}
+                      </div>
+                    </div>
+                  </a>
+                )
               ))}
             </div>
           </div>
@@ -424,6 +446,47 @@ export default function App() {
 
                 {subscribeMessage && <div className="text-sm text-[#111827]/80 mt-2">{subscribeMessage}</div>}
               </form>
+            </div>
+          </div>
+        )}
+
+        {selectedProject && (
+          <div
+            className="fixed inset-0 z-[10004] flex items-center justify-center bg-black/55 backdrop-blur-md px-6"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setSelectedProject(null);
+            }}
+          >
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="project-dialog-title"
+              className="bg-[#f7f9f4] text-[#111827] border border-[#111827]/10 rounded-3xl w-full max-w-2xl max-h-[85vh] overflow-y-auto p-8 sm:p-10 relative shadow-[0_24px_70px_rgba(17,24,39,0.28)]"
+            >
+              <div className="flex items-start justify-between gap-6 mb-5">
+                <h3 id="project-dialog-title" className="text-2xl sm:text-3xl font-black text-[#111827]">
+                  {selectedProject.title}
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProject(null)}
+                  className="shrink-0 h-9 w-9 flex items-center justify-center rounded-full text-[#111827]/55 hover:text-[#111827] hover:bg-white"
+                  aria-label="Close project details"
+                >
+                  ✕
+                </button>
+              </div>
+              <p className="text-[#111827]/75 text-[15px] sm:text-base leading-[1.8] mb-8">
+                {selectedProject.desc}
+              </p>
+              <a
+                href={selectedProject.externalUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center rounded-2xl bg-[#1fc667] px-5 py-3 text-sm sm:text-base font-bold text-[#102416] hover:bg-[#18ad58] transition-colors"
+              >
+                {t.readEngineeringPaper} ↗
+              </a>
             </div>
           </div>
         )}

@@ -93,6 +93,7 @@ export const projects = [
   },
   {
     title: "Engineering Case Study: Designing a Zero-Cost, Serverless Portfolio & Edge-Inference AI Career Strategist",
+    cardDesc: "Edge-Inference AI Career Strategist (Serverless Portfolio Assistant): I engineered a zero-cost, 24/7 AI Career Strategist integrated directly into my GitHub Pages portfolio.",
     desc: "Edge-Inference AI Career Strategist (Serverless Portfolio Assistant): I engineered a zero-cost, 24/7 AI Career Strategist integrated directly into my GitHub Pages portfolio using Cloudflare Workers and Cloudflare Workers AI (@cf/meta/llama-4-scout-17b-16e-instruct), backed by an automated Google Gemini fallback chain. By consolidating 1.02 MB of redundant multi-CV documents into a canonical 3,965-byte (~650-token) knowledge base—a 99.6% payload reduction—and implementing server-side CORS security and diagnostic prompt engineering, the assistant delivers sub-2-second, metric-backed answers tailored to recruiter queries rather than dumping raw resume text.",
     externalUrl: "https://drive.google.com/file/d/15Z0BeNiHWY96c-YKgZ4eOT4eKOY8Y2hN/view?usp=sharing",
     linkText: "Read the full engineering paper ↗",
@@ -177,6 +178,7 @@ export const translations = {
     subscribeFailure: "Submission failed - please try again later.",
     networkError: "Network error - please try again later.",
     readOriginal: "Read Original Post",
+    readEngineeringPaper: "Read the full engineering paper",
     backToPortfolio: "Back to Portfolio",
     blogNotFound: "Blog not found",
     goBack: "Go back",
@@ -225,6 +227,7 @@ export const translations = {
     subscribeFailure: "Übermittlung fehlgeschlagen - bitte versuchen Sie es später erneut.",
     networkError: "Netzwerkfehler - bitte versuchen Sie es später erneut.",
     readOriginal: "Originalbeitrag lesen",
+    readEngineeringPaper: "Vollständige Engineering-Arbeit lesen",
     backToPortfolio: "Zurück zum Portfolio",
     blogNotFound: "Blog nicht gefunden",
     goBack: "Zurück",
@@ -255,6 +258,7 @@ export const translations = {
       {
         ...projects[4],
         title: "Engineering-Fallstudie: Entwicklung eines kostenlosen, serverlosen Portfolios und eines KI-Career-Strategen mit Edge-Inferenz",
+        cardDesc: "Edge-Inferenz-KI-Career-Stratege (Serverloser Portfolio-Assistent): Ich habe einen kostenlosen, rund um die Uhr verfügbaren KI-Career-Strategen direkt in mein GitHub-Pages-Portfolio integriert.",
         desc: "Edge-Inferenz-KI-Career-Stratege (Serverloser Portfolio-Assistent): Ich habe einen kostenlosen, rund um die Uhr verfügbaren KI-Career-Strategen direkt in mein GitHub-Pages-Portfolio integriert. Dabei kommen Cloudflare Workers und Cloudflare Workers AI (@cf/meta/llama-4-scout-17b-16e-instruct) zum Einsatz, ergänzt durch eine automatisierte Google-Gemini-Fallback-Kette. Durch die Konsolidierung von 1,02 MB redundanten Lebenslaufdokumenten in eine kanonische Wissensbasis von 3.965 Byte (~650 Tokens) wurde die Nutzlast um 99,6 % reduziert. Serverseitige CORS-Sicherheit und diagnostisches Prompt Engineering ermöglichen Antworten in unter zwei Sekunden.",
         linkText: "Vollständige Engineering-Arbeit lesen",
       },
