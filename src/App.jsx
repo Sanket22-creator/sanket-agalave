@@ -162,7 +162,19 @@ export default function App() {
 
             <div className="mt-10 space-y-4">
               {announcements.map((item) => (
-                <div key={item} className="glass rounded-2xl px-6 py-5 text-[#111827] text-[15px] sm:text-base font-semibold leading-relaxed">{item}</div>
+                typeof item === "string" ? (
+                  <div key={item} className="glass rounded-2xl px-6 py-5 text-[#111827] text-[15px] sm:text-base font-semibold leading-relaxed">{item}</div>
+                ) : (
+                  <a
+                    key={item.text}
+                    href={item.externalUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block glass rounded-2xl px-6 py-5 text-[#111827] text-[15px] sm:text-base font-semibold leading-relaxed hover:bg-white/70 transition-colors"
+                  >
+                    {item.text} <span aria-hidden="true">↗</span>
+                  </a>
+                )
               ))}
             </div>
           </div>
