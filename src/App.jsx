@@ -4,17 +4,20 @@ import Logo from "./components/Logo";
 
 import { asset } from "./utils/asset";
 import {
-  navLinks,
-  roles,
-  announcements,
-  education,
-  experience,
-  projects,
-  blogs,
   formspreeEndpoint,
+  translations,
 } from "./data/content";
+import { useLanguage } from "./i18n";
 
 export default function App() {
+  const { language, setLanguage } = useLanguage();
+  const t = translations[language];
+  const navLinks = t.navLinks;
+  const announcements = t.announcementsData;
+  const education = t.educationData;
+  const experience = t.experienceData;
+  const projects = t.projectsData;
+  const blogs = t.blogsData;
   const [open, setOpen] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -43,15 +46,29 @@ export default function App() {
           </div>
 
             <div className="glass rounded-2xl px-5 sm:px-8 py-3 flex items-center gap-4 sm:gap-8 overflow-x-auto">
-            {navLinks.map((item) => (
+            {navLinks.map((item, index) => (
               <a
                 key={item}
-                href={`#${item.toLowerCase()}`}
-                onClick={(e) => scrollToSection(e, item.toLowerCase())}
+                href={`#${translations.en.navLinks[index].toLowerCase()}`}
+                onClick={(e) => scrollToSection(e, translations.en.navLinks[index].toLowerCase())}
                 className="text-[14px] sm:text-[16px] whitespace-nowrap text-[#1a211d]/80 hover:text-[#1a211d] font-semibold transition-colors duration-300"
               >
                 {item}
               </a>
+            ))}
+          </div>
+          <div className="glass rounded-full p-1 flex items-center shrink-0" aria-label="Language switch">
+            {["en", "de"].map((code) => (
+              <button
+                key={code}
+                type="button"
+                onClick={() => setLanguage(code)}
+                className={`h-9 px-3 rounded-full text-xs font-black uppercase transition-colors ${language === code ? "bg-[#111827] text-white" : "text-[#111827]/65 hover:text-[#111827]"}`}
+                aria-pressed={language === code}
+                aria-label={code === "de" ? "Deutsch" : "English"}
+              >
+                {code}
+              </button>
             ))}
           </div>
         </nav>
@@ -60,7 +77,7 @@ export default function App() {
           <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1fr] items-stretch overflow-hidden rounded-3xl bg-[#f7f9f4] shadow-[0_18px_55px_rgba(17,24,39,0.12)]">
             <div className="bg-[#f7f9f4] text-[#111827] px-8 sm:px-12 md:px-14 py-14 sm:py-16 lg:py-18 rounded-t-3xl lg:rounded-l-3xl lg:rounded-r-none min-h-[360px] sm:min-h-[420px] flex flex-col justify-center">
               <p className="text-sm sm:text-base font-semibold mb-3">
-                Hi everyone, my name is
+                {t.heroIntro}
               </p>
 
               <h1 className="text-[3rem] sm:text-[4.2rem] md:text-[5rem] leading-[0.88] font-bold tracking-tight mb-7">
@@ -70,14 +87,14 @@ export default function App() {
               </h1>
 
               <h2 className="text-base sm:text-lg md:text-xl font-bold text-[#18a878] leading-tight mb-7 max-w-sm">
-                I'm a Student in Supply Chain
+                {t.heroRole}
                 <br />
-                and Logistics Analysis
+                {t.heroRoleLine}
               </h2>
 
               <div className="flex items-center gap-3 flex-wrap">
-                <a href="#projects" onClick={(e) => scrollToSection(e, "projects")} className="rounded-full border border-[#111827]/15 px-5 py-3 text-[13px] font-semibold hover:bg-[#111827] hover:text-white transition-all duration-300">View Projects ↗</a>
-                <a href="#blogs" onClick={(e) => scrollToSection(e, "blogs")} className="rounded-full border border-[#111827]/15 px-5 py-3 text-[13px] font-semibold hover:bg-[#111827] hover:text-white transition-all duration-300">Read Blogs ↗</a>
+                <a href="#projects" onClick={(e) => scrollToSection(e, "projects")} className="rounded-full border border-[#111827]/15 px-5 py-3 text-[13px] font-semibold hover:bg-[#111827] hover:text-white transition-all duration-300">{t.viewProjects} ↗</a>
+                <a href="#blogs" onClick={(e) => scrollToSection(e, "blogs")} className="rounded-full border border-[#111827]/15 px-5 py-3 text-[13px] font-semibold hover:bg-[#111827] hover:text-white transition-all duration-300">{t.readBlogs} ↗</a>
               </div>
             </div>
 
@@ -97,11 +114,11 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-16 items-center">
               <div>
-                <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">About</span>
+                <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">{t.about}</span>
                 <h2 className="mt-4 text-[2.4rem] sm:text-[3.2rem] md:text-[4rem] leading-[0.98] font-black tracking-tight text-[#111827] max-w-md">
-                  A Quick
+                  {t.aboutTitle}
                   <br />
-                  Background
+                  {t.aboutTitleLine}
                 </h2>
 
                 <div className="mt-8 flex items-center gap-5 flex-wrap">
@@ -113,12 +130,12 @@ export default function App() {
 
               <div className="grid grid-cols-1 gap-4">
                 <div className="rounded-2xl bg-white/90 px-6 py-5 shadow-[0_8px_30px_rgba(17,24,39,0.06)]">
-                  <p className="text-[#168954] font-black text-lg leading-tight">I'm based in</p>
-                  <p className="mt-2 text-[12px] sm:text-[13px] uppercase tracking-[0.08em] font-black text-[#111827]">Berlin, Germany</p>
+                  <p className="text-[#168954] font-black text-lg leading-tight">{t.basedInLabel}</p>
+                  <p className="mt-2 text-[12px] sm:text-[13px] uppercase tracking-[0.08em] font-black text-[#111827]">{language === "de" ? "Berlin, Deutschland" : "Berlin, Germany"}</p>
                 </div>
 
                 <div className="rounded-2xl bg-white/90 px-6 py-5 shadow-[0_8px_30px_rgba(17,24,39,0.06)]">
-                  <p className="text-[#168954] font-black text-lg leading-tight">I worked at</p>
+                  <p className="text-[#168954] font-black text-lg leading-tight">{t.workedAtLabel}</p>
                   <p className="mt-2 text-[12px] sm:text-[13px] uppercase tracking-[0.08em] font-black text-[#111827]">
                     Infosys (2 years)
                     <br />
@@ -127,7 +144,7 @@ export default function App() {
                 </div>
 
                 <div className="rounded-2xl bg-white/90 px-6 py-5 shadow-[0_8px_30px_rgba(17,24,39,0.06)]">
-                  <p className="text-[#168954] font-black text-lg leading-tight">My roles were</p>
+                  <p className="text-[#168954] font-black text-lg leading-tight">{t.rolesLabel}</p>
                   <p className="mt-2 text-[12px] sm:text-[13px] uppercase tracking-[0.08em] font-black text-[#111827]">
                     System Engineer,
                     <br />
@@ -141,7 +158,7 @@ export default function App() {
 
         <section id="announcements" className="border-t border-[#1a211d]/10">
           <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
-            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Announcements</span>
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">{t.announcements}</span>
 
             <div className="mt-10 space-y-4">
               {announcements.map((item) => (
@@ -153,7 +170,7 @@ export default function App() {
 
         <section id="education" className="border-t border-[#1a211d]/10">
           <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
-            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Education</span>
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">{t.education}</span>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
               {education.map((e) => (
@@ -174,7 +191,7 @@ export default function App() {
 
         <section id="experience" className="border-t border-[#1a211d]/10">
           <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
-            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Experience</span>
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">{t.experience}</span>
 
             <div className="mt-10 space-y-6">
               {experience.map((item) => (
@@ -201,7 +218,7 @@ export default function App() {
 
         <section id="blogs" className="border-t border-[#1a211d]/10">
           <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
-            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Blogs</span>
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">{t.blogs}</span>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
               {blogs.map((blog) => (
@@ -219,7 +236,7 @@ export default function App() {
                   <p className="text-[#111827]/75 max-w-2xl leading-[1.7] mb-8 text-[15px] sm:text-base">{blog.excerpt}</p>
 
                   <div className="inline-flex items-center rounded-2xl px-5 py-3 sm:py-4 glass text-sm sm:text-base text-[#1a211d]/85 hover:text-[#1a211d] transition-colors font-medium">
-                    Open Blog Detail ↗
+                    {t.openBlog} ↗
                   </div>
                 </Link>
               ))}
@@ -229,7 +246,7 @@ export default function App() {
 
         <section id="projects" className="border-t border-[#1a211d]/10">
           <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
-            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Projects</span>
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">{t.projects}</span>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
               {projects.map((item) => (
@@ -242,7 +259,7 @@ export default function App() {
                 >
                   <div className="flex flex-col justify-between h-full min-h-[240px]">
                     <div>
-                      <div className="text-[12px] uppercase tracking-[0.2em] text-[#168954] font-bold mb-6">Category</div>
+                      <div className="text-[12px] uppercase tracking-[0.2em] text-[#168954] font-bold mb-6">{t.category}</div>
                       <h3 className="text-[1.8rem] sm:text-[2rem] font-semibold leading-tight text-[#1a211d]">{item.title}</h3>
                       <p className="text-[#111827]/75 mt-5 leading-[1.7] text-[15px] max-w-sm">{item.desc}</p>
                     </div>
@@ -266,33 +283,33 @@ export default function App() {
                   <span className="text-xl font-medium">Sanket Agalave</span>
                 </div>
 
-                <p className="text-[15px] leading-[1.7] max-w-sm text-[#102416]/85">Engineering systems, exploring operational intelligence, and documenting ideas across manufacturing, logistics, and digital transformation.</p>
+                <p className="text-[15px] leading-[1.7] max-w-sm text-[#102416]/85">{t.footerDescription}</p>
 
-                <button onClick={() => setOpen(true)} className="rounded-full border border-[#102416]/20 px-5 py-3 text-[13px] mt-8 hover:bg-[#102416] hover:text-white transition-all duration-300">Subscribe for Updates</button>
+                <button onClick={() => setOpen(true)} className="rounded-full border border-[#102416]/20 px-5 py-3 text-[13px] mt-8 hover:bg-[#102416] hover:text-white transition-all duration-300">{t.subscribeUpdates}</button>
               </div>
 
               <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-10">
                 <div>
-                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">Explore</h3>
+                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">{t.explore}</h3>
                   <ul className="space-y-3 text-sm text-[#102416]/85">
-                    <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')}>About</a></li>
-                    <li><a href="#announcements" onClick={(e) => scrollToSection(e, 'announcements')}>Announcements</a></li>
-                    <li><a href="#blogs" onClick={(e) => scrollToSection(e, 'blogs')}>Blogs</a></li>
+                    <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')}>{t.about}</a></li>
+                    <li><a href="#announcements" onClick={(e) => scrollToSection(e, 'announcements')}>{t.announcements}</a></li>
+                    <li><a href="#blogs" onClick={(e) => scrollToSection(e, 'blogs')}>{t.blogs}</a></li>
                   </ul>
                 </div>
 
                 <div>
-                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">Work</h3>
+                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">{t.work}</h3>
                   <ul className="space-y-3 text-sm text-[#102416]/85">
-                    <li><a href="#education" onClick={(e) => scrollToSection(e, 'education')}>Education</a></li>
-                    <li><a href="#experience" onClick={(e) => scrollToSection(e, 'experience')}>Experience</a></li>
-                    <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>Projects</a></li>
-                    <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>Supply Chain Management</a></li>
+                    <li><a href="#education" onClick={(e) => scrollToSection(e, 'education')}>{t.education}</a></li>
+                    <li><a href="#experience" onClick={(e) => scrollToSection(e, 'experience')}>{t.experience}</a></li>
+                    <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>{t.projects}</a></li>
+                    <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>{t.supplyChainManagement}</a></li>
                   </ul>
                 </div>
 
                 <div>
-                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">Connect</h3>
+                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">{t.connect}</h3>
                   <ul className="space-y-3 text-sm text-[#102416]/85">
                     <li><a href="mailto:sanketagalave20@gmail.com">Email</a></li>
                     <li><a href="https://www.linkedin.com/in/sanket-agalave-03b17220b/" target="_blank" rel="noreferrer">LinkedIn</a></li>
@@ -303,7 +320,7 @@ export default function App() {
             </div>
 
             <div className="pt-6 border-t border-[#102416]/15 flex flex-col md:flex-row items-center justify-between gap-6">
-              <p className="text-[11px] uppercase tracking-[0.3em] font-bold text-[#102416]/80">Designed & Engineered by Sanket Agalave</p>
+              <p className="text-[11px] uppercase tracking-[0.3em] font-bold text-[#102416]/80">{t.designedBy}</p>
 
               <div className="flex items-center gap-5 text-sm font-semibold text-[#102416]/85">
                 <a href="https://www.linkedin.com/in/sanket-agalave-03b17220b/" target="_blank" rel="noreferrer">LinkedIn</a>
@@ -319,8 +336,8 @@ export default function App() {
             <div className="bg-[#f7f9f4] text-[#111827] border border-[#111827]/10 rounded-3xl w-full max-w-md p-8 relative shadow-[0_24px_70px_rgba(17,24,39,0.28)]">
               <button onClick={() => setOpen(false)} className="absolute top-5 right-5 text-[#111827]/55 hover:text-[#111827]">✕</button>
 
-              <h3 className="text-2xl font-black mb-3 text-[#111827]">Subscribe</h3>
-              <p className="text-[#111827]/70 text-sm leading-[1.7] mb-8">Get notified about new projects, articles, announcements, and updates.</p>
+              <h3 className="text-2xl font-black mb-3 text-[#111827]">{t.subscribe}</h3>
+              <p className="text-[#111827]/70 text-sm leading-[1.7] mb-8">{t.subscribeDescription}</p>
 
               <form
                 className="space-y-4"
@@ -342,17 +359,17 @@ export default function App() {
                     });
 
                     if (res.ok) {
-                      setSubscribeMessage("Thanks — we'll notify you shortly.");
+                      setSubscribeMessage(t.subscribeSuccess);
                       setFirstName("");
                       setLastName("");
                       setEmailAddr("");
                       setTimeout(() => setOpen(false), 1200);
                     } else {
                       const data = await res.json().catch(() => null);
-                      setSubscribeMessage((data && data.error) || "Submission failed — please try again later.");
+                      setSubscribeMessage((data && data.error) || t.subscribeFailure);
                     }
                   } catch (err) {
-                    setSubscribeMessage("Network error — please try again later.");
+                    setSubscribeMessage(t.networkError);
                   } finally {
                     setSubmitting(false);
                   }
@@ -361,7 +378,7 @@ export default function App() {
                 <input
                   type="text"
                   required
-                  placeholder="First Name *"
+                  placeholder={`${t.firstName} *`}
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   className="glass w-full rounded-2xl px-5 py-4 text-[#111827] bg-white/70 outline-none placeholder:text-[#111827]/45"
@@ -370,7 +387,7 @@ export default function App() {
                 <input
                   type="text"
                   required
-                  placeholder="Last Name *"
+                  placeholder={`${t.lastName} *`}
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   className="glass w-full rounded-2xl px-5 py-4 text-[#111827] bg-white/70 outline-none placeholder:text-[#111827]/45"
@@ -379,7 +396,7 @@ export default function App() {
                 <input
                   type="email"
                   required
-                  placeholder="Email Address *"
+                  placeholder={`${t.emailAddress} *`}
                   value={emailAddr}
                   onChange={(e) => setEmailAddr(e.target.value)}
                   className="glass w-full rounded-2xl px-5 py-4 text-[#111827] bg-white/70 outline-none placeholder:text-[#111827]/45"
@@ -390,7 +407,7 @@ export default function App() {
                   disabled={submitting}
                   className="bg-[#1fc667] text-[#102416] font-bold w-full rounded-2xl py-4 hover:bg-[#18ad58] transition-all duration-300 disabled:opacity-50"
                 >
-                  {submitting ? "Sending..." : "Join the Journey"}
+                  {submitting ? t.sending : t.joinJourney}
                 </button>
 
                 {subscribeMessage && <div className="text-sm text-[#111827]/80 mt-2">{subscribeMessage}</div>}

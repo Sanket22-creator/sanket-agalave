@@ -93,7 +93,11 @@
       const chatBox = document.getElementById("sa-chat-box");
       const msgContainer = document.getElementById("sa-chat-messages");
       const input = document.getElementById("sa-chat-input");
+      const sendButton = document.getElementById("sa-chat-send");
+      const chipButtons = document.querySelectorAll(".sa-chip");
       let history = [];
+      let isSending = false;
+      const sendQueue = [];
 
       document.getElementById("sa-chat-toggle").onclick = () => {
         chatBox.style.display = chatBox.style.display === "flex" ? "none" : "flex";
@@ -122,12 +126,24 @@
         return div;
       }
 
-      async function sendQuestion(text) {
-        appendMsg(text, "user");
-        history.push({ role: "user", parts: [{ text }] });
-        const loading = appendMsg("Analyzing Sanket's profile...", "bot");
+      function setSending(sending) {
+        isSending = sending;
+        input.disabled = sending;
+        sendButton.disabled = sending;
+        chipButtons.forEach((button) => {
+          button.disabled = sending;
+        });
+      }
+
+      async function processSendQueue() {
+        if (isSending || sendQueue.length === 0) return;
+
+        setSending(true);
+        const queued = sendQueue.shift();
+        const loading = queued.loading;
 
         try {
+          history.push({ role: "user", parts: [{ text: queued.text }] });
           const res = await fetch(WORKER_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -139,11 +155,23 @@
           history.push({ role: "model", parts: [{ text: reply }] });
         } catch {
           loading.textContent = "Network error. Please try again in a moment.";
+          history.pop();
+        } finally {
+          setSending(false);
+          processSendQueue();
         }
+      }
+
+      function sendQuestion(text) {
+        appendMsg(text, "user");
+        const loading = appendMsg("Analyzing Sanket's profile...", "bot");
+        sendQueue.push({ text, loading });
+        processSendQueue();
       }
 
       document.getElementById("sa-chat-form").onsubmit = (e) => {
         e.preventDefault();
+        if (isSending) return;
         const q = input.value.trim();
         if (!q) return;
         input.value = "";
