@@ -13,8 +13,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      VITE_CHAT_API_URL: https://sanketagalave-production.up.railway.app
     steps:
       - name: Checkout
         uses: actions/checkout@v4
