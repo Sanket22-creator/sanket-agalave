@@ -1,0 +1,405 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Logo from "./components/Logo";
+
+import { asset } from "./utils/asset";
+import {
+  navLinks,
+  roles,
+  announcements,
+  education,
+  experience,
+  projects,
+  blogs,
+  formspreeEndpoint,
+} from "./data/content";
+
+export default function App() {
+  const [open, setOpen] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [emailAddr, setEmailAddr] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [subscribeMessage, setSubscribeMessage] = useState("");
+  const scrollToSection = (e, id) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    // fallback: update the hash so the browser lands there
+    if (typeof window !== "undefined") {
+      window.location.hash = id;
+    }
+  };
+
+  return (
+    <main className="relative min-h-screen overflow-x-hidden text-[#1a211d] bg-[#e7efe1]">
+      <div className="relative z-10">
+        <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center pt-4 sm:pt-6 px-4 gap-2">
+          <div className="glass rounded-full w-11 h-11 flex items-center justify-center">
+            <Logo />
+          </div>
+
+            <div className="glass rounded-2xl px-5 sm:px-8 py-3 flex items-center gap-4 sm:gap-8 overflow-x-auto">
+            {navLinks.map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                onClick={(e) => scrollToSection(e, item.toLowerCase())}
+                className="text-[14px] sm:text-[16px] whitespace-nowrap text-[#1a211d]/80 hover:text-[#1a211d] font-semibold transition-colors duration-300"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+        </nav>
+
+        <section className="min-h-[calc(100vh-96px)] flex items-center px-6 sm:px-12 md:px-16 lg:px-20 py-20 sm:py-24">
+          <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1fr] items-stretch overflow-hidden rounded-3xl bg-[#f7f9f4] shadow-[0_18px_55px_rgba(17,24,39,0.12)]">
+            <div className="bg-[#f7f9f4] text-[#111827] px-8 sm:px-12 md:px-14 py-14 sm:py-16 lg:py-18 rounded-t-3xl lg:rounded-l-3xl lg:rounded-r-none min-h-[360px] sm:min-h-[420px] flex flex-col justify-center">
+              <p className="text-sm sm:text-base font-semibold mb-3">
+                Hi everyone, my name is
+              </p>
+
+              <h1 className="text-[3rem] sm:text-[4.2rem] md:text-[5rem] leading-[0.88] font-bold tracking-tight mb-7">
+                Sanket
+                <br />
+                Agalave
+              </h1>
+
+              <h2 className="text-base sm:text-lg md:text-xl font-bold text-[#18a878] leading-tight mb-7 max-w-sm">
+                I'm a Student in Supply Chain
+                <br />
+                and Logistics Analysis
+              </h2>
+
+              <div className="flex items-center gap-3 flex-wrap">
+                <a href="#projects" onClick={(e) => scrollToSection(e, "projects")} className="rounded-full border border-[#111827]/15 px-5 py-3 text-[13px] font-semibold hover:bg-[#111827] hover:text-white transition-all duration-300">View Projects ↗</a>
+                <a href="#blogs" onClick={(e) => scrollToSection(e, "blogs")} className="rounded-full border border-[#111827]/15 px-5 py-3 text-[13px] font-semibold hover:bg-[#111827] hover:text-white transition-all duration-300">Read Blogs ↗</a>
+              </div>
+            </div>
+
+            <div className="bg-[#f7f9f4] p-4 sm:p-5 md:p-6 rounded-b-3xl lg:rounded-r-3xl lg:rounded-l-none">
+              <div className="h-full min-h-[360px] sm:min-h-[420px] overflow-hidden rounded-2xl bg-[#dfe6dc] ring-1 ring-[#111827]/5">
+                <img
+                  src={asset("/profile.jpeg")}
+                  alt="Sanket Agalave"
+                  className="w-full h-full min-h-[360px] sm:min-h-[420px] object-cover object-[center_30%] saturate-[0.88] contrast-[1.04] brightness-[1.03]"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="about" className="border-t border-[#1a211d]/10">
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-10 lg:gap-16 items-center">
+              <div>
+                <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">About</span>
+                <h2 className="mt-4 text-[2.4rem] sm:text-[3.2rem] md:text-[4rem] leading-[0.98] font-black tracking-tight text-[#111827] max-w-md">
+                  A Quick
+                  <br />
+                  Background
+                </h2>
+
+                <div className="mt-8 flex items-center gap-5 flex-wrap">
+                  <img src={asset("/bbw.svg")} alt="BBW University" className="h-14 w-auto" />
+                  <img src={asset("/infosys.svg")} alt="Infosys" className="h-14 w-auto" />
+                  <img src={asset("/rollsroyce.svg")} alt="Rolls-Royce" className="h-12 w-auto" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4">
+                <div className="rounded-2xl bg-white/90 px-6 py-5 shadow-[0_8px_30px_rgba(17,24,39,0.06)]">
+                  <p className="text-[#168954] font-black text-lg leading-tight">I'm based in</p>
+                  <p className="mt-2 text-[12px] sm:text-[13px] uppercase tracking-[0.08em] font-black text-[#111827]">Berlin, Germany</p>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 px-6 py-5 shadow-[0_8px_30px_rgba(17,24,39,0.06)]">
+                  <p className="text-[#168954] font-black text-lg leading-tight">I worked at</p>
+                  <p className="mt-2 text-[12px] sm:text-[13px] uppercase tracking-[0.08em] font-black text-[#111827]">
+                    Infosys (2 years)
+                    <br />
+                    Rolls-Royce (1.5 years)
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-white/90 px-6 py-5 shadow-[0_8px_30px_rgba(17,24,39,0.06)]">
+                  <p className="text-[#168954] font-black text-lg leading-tight">My roles were</p>
+                  <p className="mt-2 text-[12px] sm:text-[13px] uppercase tracking-[0.08em] font-black text-[#111827]">
+                    System Engineer,
+                    <br />
+                    Lifecycle Engineer
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="announcements" className="border-t border-[#1a211d]/10">
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Announcements</span>
+
+            <div className="mt-10 space-y-4">
+              {announcements.map((item) => (
+                <div key={item} className="glass rounded-2xl px-6 py-5 text-[#111827] text-[15px] sm:text-base font-semibold leading-relaxed">{item}</div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="education" className="border-t border-[#1a211d]/10">
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Education</span>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+              {education.map((e) => (
+                <div key={e.degree} className="glass rounded-3xl p-8">
+                  <div className="flex items-start justify-between mb-10">
+                    <img src={e.logo} alt={e.school} className="w-auto h-16 object-contain" />
+                    <div className="text-[12px] font-bold text-[#111827]/70">{e.date}</div>
+                  </div>
+
+                  <h3 className="text-[1.4rem] font-semibold mb-4">{e.degree}</h3>
+                  <p className="text-[#111827]/80 font-semibold">{e.school}</p>
+                  <p className="text-[#111827]/65 text-[13px] mt-2">{e.location}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="experience" className="border-t border-[#1a211d]/10">
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Experience</span>
+
+            <div className="mt-10 space-y-6">
+              {experience.map((item) => (
+                <div key={item.role} className="glass rounded-3xl p-8">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div className="flex items-start gap-5">
+                      <div className="glass rounded-2xl w-16 h-16 flex items-center justify-center">
+                        <img src={item.logo} alt={item.company} className="w-10 h-10 object-contain" />
+                      </div>
+
+                      <div>
+                        <h3 className="text-[1.5rem] sm:text-[2rem] font-semibold mb-2">{item.role}</h3>
+                        <p className="text-[#111827]/80 font-semibold">{item.company}</p>
+                      </div>
+                    </div>
+
+                    <div className="text-[#111827]/70 text-[13px] font-bold">{item.date}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="blogs" className="border-t border-[#1a211d]/10">
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Blogs</span>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
+              {blogs.map((blog) => (
+                <Link
+                  key={blog.id}
+                  to={`/blog/${blog.id}`}
+                  className="block glass rounded-3xl p-8 sm:p-10 hover:bg-white/5 transition-colors"
+                >
+                  <div className="text-[12px] sm:text-[13px] uppercase tracking-[0.08em] text-[#168954] mb-5 font-bold">{blog.category}</div>
+
+                  <h3 className="text-[1.5rem] sm:text-[2rem] md:text-[2.2rem] leading-[1.2] font-semibold max-w-3xl mb-6 text-[#1a211d]">
+                    {blog.title}
+                  </h3>
+
+                  <p className="text-[#111827]/75 max-w-2xl leading-[1.7] mb-8 text-[15px] sm:text-base">{blog.excerpt}</p>
+
+                  <div className="inline-flex items-center rounded-2xl px-5 py-3 sm:py-4 glass text-sm sm:text-base text-[#1a211d]/85 hover:text-[#1a211d] transition-colors font-medium">
+                    Open Blog Detail ↗
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="projects" className="border-t border-[#1a211d]/10">
+          <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-20 lg:px-28 py-28">
+            <span className="text-[16px] sm:text-[18px] uppercase tracking-[0.22em] text-[#168954] font-black">Projects</span>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+              {projects.map((item) => (
+                <a
+                  key={item.title}
+                  href={item.externalUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="glass rounded-3xl p-10 transition-all duration-300 hover:bg-white/5 block"
+                >
+                  <div className="flex flex-col justify-between h-full min-h-[240px]">
+                    <div>
+                      <div className="text-[12px] uppercase tracking-[0.2em] text-[#168954] font-bold mb-6">Category</div>
+                      <h3 className="text-[1.8rem] sm:text-[2rem] font-semibold leading-tight text-[#1a211d]">{item.title}</h3>
+                      <p className="text-[#111827]/75 mt-5 leading-[1.7] text-[15px] max-w-sm">{item.desc}</p>
+                    </div>
+
+                    <div className="pt-10 text-sm text-[#1a211d]/60">
+                      {item.linkText}
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <footer id="contact" className="w-full bg-[#1fc667] text-[#102416] mt-24 px-6 sm:px-12 md:px-20 lg:px-28 py-16">
+          <div className="max-w-7xl mx-auto rounded-3xl p-6 md:p-10 border border-[#102416]/10 bg-white/10">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-12">
+              <div className="md:col-span-5">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="glass rounded-full w-11 h-11 flex items-center justify-center"><Logo /></div>
+                  <span className="text-xl font-medium">Sanket Agalave</span>
+                </div>
+
+                <p className="text-[15px] leading-[1.7] max-w-sm text-[#102416]/85">Engineering systems, exploring operational intelligence, and documenting ideas across manufacturing, logistics, and digital transformation.</p>
+
+                <button onClick={() => setOpen(true)} className="rounded-full border border-[#102416]/20 px-5 py-3 text-[13px] mt-8 hover:bg-[#102416] hover:text-white transition-all duration-300">Subscribe for Updates</button>
+              </div>
+
+              <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-10">
+                <div>
+                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">Explore</h3>
+                  <ul className="space-y-3 text-sm text-[#102416]/85">
+                    <li><a href="#about" onClick={(e) => scrollToSection(e, 'about')}>About</a></li>
+                    <li><a href="#announcements" onClick={(e) => scrollToSection(e, 'announcements')}>Announcements</a></li>
+                    <li><a href="#blogs" onClick={(e) => scrollToSection(e, 'blogs')}>Blogs</a></li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">Work</h3>
+                  <ul className="space-y-3 text-sm text-[#102416]/85">
+                    <li><a href="#education" onClick={(e) => scrollToSection(e, 'education')}>Education</a></li>
+                    <li><a href="#experience" onClick={(e) => scrollToSection(e, 'experience')}>Experience</a></li>
+                    <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>Projects</a></li>
+                    <li><a href="#projects" onClick={(e) => scrollToSection(e, 'projects')}>Supply Chain Management</a></li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h3 className="text-sm uppercase tracking-wider text-[#102416] mb-4">Connect</h3>
+                  <ul className="space-y-3 text-sm text-[#102416]/85">
+                    <li><a href="mailto:sanketagalave20@gmail.com">Email</a></li>
+                    <li><a href="https://www.linkedin.com/in/sanket-agalave-03b17220b/" target="_blank" rel="noreferrer">LinkedIn</a></li>
+                    <li><a href="https://github.com/Sanket22-creator" target="_blank" rel="noreferrer">GitHub</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-[#102416]/15 flex flex-col md:flex-row items-center justify-between gap-6">
+              <p className="text-[11px] uppercase tracking-[0.3em] font-bold text-[#102416]/80">Designed & Engineered by Sanket Agalave</p>
+
+              <div className="flex items-center gap-5 text-sm font-semibold text-[#102416]/85">
+                <a href="https://www.linkedin.com/in/sanket-agalave-03b17220b/" target="_blank" rel="noreferrer">LinkedIn</a>
+                <a href="https://github.com/Sanket22-creator" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="mailto:sanketagalave20@gmail.com">Email</a>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+        {open && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md px-6">
+            <div className="bg-[#f7f9f4] text-[#111827] border border-[#111827]/10 rounded-3xl w-full max-w-md p-8 relative shadow-[0_24px_70px_rgba(17,24,39,0.28)]">
+              <button onClick={() => setOpen(false)} className="absolute top-5 right-5 text-[#111827]/55 hover:text-[#111827]">✕</button>
+
+              <h3 className="text-2xl font-black mb-3 text-[#111827]">Subscribe</h3>
+              <p className="text-[#111827]/70 text-sm leading-[1.7] mb-8">Get notified about new projects, articles, announcements, and updates.</p>
+
+              <form
+                className="space-y-4"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setSubmitting(true);
+                  setSubscribeMessage("");
+
+                  try {
+                    const fd = new FormData();
+                    fd.append("firstName", firstName);
+                    fd.append("lastName", lastName);
+                    fd.append("email", emailAddr);
+
+                    const res = await fetch(formspreeEndpoint, {
+                      method: "POST",
+                      headers: { Accept: "application/json" },
+                      body: fd,
+                    });
+
+                    if (res.ok) {
+                      setSubscribeMessage("Thanks — we'll notify you shortly.");
+                      setFirstName("");
+                      setLastName("");
+                      setEmailAddr("");
+                      setTimeout(() => setOpen(false), 1200);
+                    } else {
+                      const data = await res.json().catch(() => null);
+                      setSubscribeMessage((data && data.error) || "Submission failed — please try again later.");
+                    }
+                  } catch (err) {
+                    setSubscribeMessage("Network error — please try again later.");
+                  } finally {
+                    setSubmitting(false);
+                  }
+                }}
+              >
+                <input
+                  type="text"
+                  required
+                  placeholder="First Name *"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="glass w-full rounded-2xl px-5 py-4 text-[#111827] bg-white/70 outline-none placeholder:text-[#111827]/45"
+                />
+
+                <input
+                  type="text"
+                  required
+                  placeholder="Last Name *"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="glass w-full rounded-2xl px-5 py-4 text-[#111827] bg-white/70 outline-none placeholder:text-[#111827]/45"
+                />
+
+                <input
+                  type="email"
+                  required
+                  placeholder="Email Address *"
+                  value={emailAddr}
+                  onChange={(e) => setEmailAddr(e.target.value)}
+                  className="glass w-full rounded-2xl px-5 py-4 text-[#111827] bg-white/70 outline-none placeholder:text-[#111827]/45"
+                />
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="bg-[#1fc667] text-[#102416] font-bold w-full rounded-2xl py-4 hover:bg-[#18ad58] transition-all duration-300 disabled:opacity-50"
+                >
+                  {submitting ? "Sending..." : "Join the Journey"}
+                </button>
+
+                {subscribeMessage && <div className="text-sm text-[#111827]/80 mt-2">{subscribeMessage}</div>}
+              </form>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </main>
+  );
+}
